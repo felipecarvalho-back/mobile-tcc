@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\NativeComponents\AppBottomBar;
+use App\NativeComponents\MercosulPlate;
+use App\NativeComponents\VehicleCard;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Native\Mobile\Edge\ComponentRegistry;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +28,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        ComponentRegistry::components([
+            'mercosul-plate' => MercosulPlate::class,
+            'app-bottom-bar' => AppBottomBar::class,
+            'vehicle-card' => VehicleCard::class,
+        ]);
     }
 
     /**

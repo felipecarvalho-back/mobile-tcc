@@ -7,7 +7,7 @@ it('renders the welcome screen with native components', function () {
 
     expect($logoPath)->toBeFile();
 
-    Native::visit('/')
+    Native::visit('/starter')
         ->assertSee('Your app is ready.')
         ->assertSee('Read the Docs')
         ->assertSee('Join the Community')
@@ -40,7 +40,7 @@ it('takes every color from the native-ui theme tokens', function () {
     $light = config('native-ui.theme.light');
     $dark = config('native-ui.theme.dark');
 
-    $screen = Native::visit('/')
+    $screen = Native::visit('/starter')
         ->assertElement('column', fn (array $node): bool => ($node['ref'] ?? null) === 'welcome-screen'
             && ($node['style']['bg_color'] ?? null) === $light['background']
             && ($node['props']['dark_bg_color'] ?? null) === $dark['background'])
@@ -70,7 +70,7 @@ it('is fully accessible', function () {
         'github-link' => ['Explore on GitHub', 'Opens the GitHub organization in your browser'],
     ];
 
-    $screen = Native::visit('/')
+    $screen = Native::visit('/starter')
         ->assertElement('image', fn (array $node): bool => ($node['ref'] ?? null) === 'nativephp-logo'
             && ($node['props']['alt'] ?? null) === 'NativePHP');
 
@@ -90,7 +90,7 @@ it('opens every welcome link through the native browser bridge', function () {
         ->respondTo('Browser.OpenInApp', ['success' => true])
         ->respondTo('Browser.Open', ['success' => true]);
 
-    Native::visit('/')
+    Native::visit('/starter')
         ->tap('docs-link')
         ->tap('community-link')
         ->tap('github-link');

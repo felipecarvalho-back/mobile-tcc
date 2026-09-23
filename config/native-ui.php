@@ -40,61 +40,78 @@ return [
     'theme' => [
 
         'light' => [
-            // Primary brand color — used for filled buttons, active states, key accents.
-            'primary' => '#0F766E',
+            // Primary brand color — Sentinela / Centro Paula Souza / FATEC vinho
+            'primary' => '#8B0024',
             'on-primary' => '#FFFFFF',
+            'primary-dark' => '#66001A',
+            'primary-light' => '#FCEBEF',
 
-            // Secondary / muted action color.
-            'secondary' => '#475569',
+            // Secondary / teal action (Capturar Placa card)
+            'secondary' => '#0F766E',
             'on-secondary' => '#FFFFFF',
+            'teal' => '#0F766E',
+            'on-teal' => '#FFFFFF',
 
             // Surface = cards, sheets, dialogs. Background = page root.
             'surface' => '#FFFFFF',
-            'on-surface' => '#1B1B18',
-            'background' => '#FAFAFA',
-            'on-background' => '#1B1B18',
+            'on-surface' => '#1C1917',
+            'background' => '#F8F6F7',
+            'on-background' => '#1C1917',
 
             // Surface variant = filled text fields, muted tonal surfaces.
-            // on-surface-variant = muted label/hint text on those surfaces.
-            'surface-variant' => '#FAFAFA',
-            'on-surface-variant' => '#706F6C',
+            'surface-variant' => '#F3F4F6',
+            'on-surface-variant' => '#6B7280',
 
             // Outline = neutral borders (text fields, dividers, cards).
-            'outline' => '#E5E5E5',
+            'outline' => '#E5E7EB',
+            'outline-variant' => '#F1EFF0',
 
-            // Destructive actions — maps to `variant="destructive"` on components.
-            'destructive' => '#B91C1C',
+            // Status colors
+            'destructive' => '#DC2626',
             'on-destructive' => '#FFFFFF',
+            'success' => '#16A34A',
+            'on-success' => '#FFFFFF',
+            'warning' => '#D97706',
+            'on-warning' => '#FFFFFF',
 
-            // Tertiary accent — for highlights, badges, emphasis not covered by primary.
-            'accent' => '#C2410C',
+            // Accent
+            'accent' => '#D97706',
             'on-accent' => '#FFFFFF',
+            'plate-blue' => '#003399',
         ],
 
         'dark' => [
-            // Leave empty or partial to auto-derive from `light` (luminance inversion).
-            // Specify any token here to override the derived value.
-            'primary' => '#14B8A6',
+            'primary' => '#A51D38',
             'on-primary' => '#FFFFFF',
+            'primary-dark' => '#8B0024',
+            'primary-light' => '#3D0010',
 
-            'secondary' => '#94A3B8',
+            'secondary' => '#14B8A6',
             'on-secondary' => '#0F172A',
+            'teal' => '#14B8A6',
+            'on-teal' => '#0F172A',
 
-            'surface' => '#161615',
-            'on-surface' => '#EDEDEC',
-            'background' => '#0A0A0A',
-            'on-background' => '#EDEDEC',
+            'surface' => '#18191D',
+            'on-surface' => '#F3F4F6',
+            'background' => '#0E0F12',
+            'on-background' => '#F3F4F6',
 
-            'surface-variant' => '#1F1F1E',
-            'on-surface-variant' => '#A1A09A',
+            'surface-variant' => '#23252A',
+            'on-surface-variant' => '#9CA3AF',
 
-            'outline' => '#3E3E3A',
+            'outline' => '#374151',
+            'outline-variant' => '#2D3036',
 
-            'destructive' => '#F87171',
+            'destructive' => '#EF4444',
             'on-destructive' => '#0F172A',
+            'success' => '#22C55E',
+            'on-success' => '#0F172A',
+            'warning' => '#F59E0B',
+            'on-warning' => '#0F172A',
 
-            'accent' => '#FDBA74',
+            'accent' => '#F59E0B',
             'on-accent' => '#0F172A',
+            'plate-blue' => '#1D4ED8',
         ],
 
         // Corner radii (points / dp).
