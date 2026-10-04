@@ -13,11 +13,11 @@
         </column>
 
         {{-- Tab 2: Capturar Placa (Botão Elevado de Destaque no Centro) --}}
-        <column class="flex-1 items-center justify-center -mt-6" @tap="goToCapture">
-            <column class="w-14 h-14 rounded-2xl {{ $active === 'capture' ? 'bg-[#8B0024] shadow-lg shadow-[#8B0024]/30 border-2 border-white' : 'bg-gray-700' }} items-center justify-center shadow-md">
+        <column class="flex-1 items-center justify-center -mt-6" @tap="takePhoto">
+            <column class="w-14 h-14 rounded-2xl bg-[#8B0024] shadow-lg shadow-[#8B0024]/30 border-2 border-white items-center justify-center">
                 <native:icon name="camera" :size="26" class="text-white" />
             </column>
-            <text class="text-[11px] {{ $active === 'capture' ? 'text-[#8B0024] font-bold' : 'text-gray-600 font-medium' }} mt-1">
+            <text class="text-[11px] text-[#8B0024] font-bold mt-1">
                 Capturar
             </text>
         </column>

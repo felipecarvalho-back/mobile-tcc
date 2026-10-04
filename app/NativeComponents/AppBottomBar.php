@@ -2,13 +2,17 @@
 
 namespace App\NativeComponents;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
 use Native\Mobile\Edge\Transition;
+use Native\Mobile\Events\Camera\PhotoTaken;
+use Native\Mobile\Facades\Camera;
+use Native\Mobile\Facades\Dialog;
 
 class AppBottomBar extends NativeComponent
 {
-    public string $active = 'capture'; // 'capture' | 'history' | 'profile' | 'monitoring'
+    public string $active = 'history'; // 'history' | 'profile'
 
     public string $transitionType = 'none'; // 'none' | 'fade' | 'slide_from_bottom' | 'slide_from_right'
 
@@ -22,13 +26,38 @@ class AppBottomBar extends NativeComponent
         };
     }
 
-    public function goToCapture(): void
+    /**
+     * Abre a camera nativa. O callback e estatico para sobreviver caso o
+     * sistema mate o processo do app enquanto a camera esta aberta.
+     */
+    public function takePhoto(): void
     {
-        if ($this->active === 'capture') {
-            return;
+        Camera::getPhoto()
+            ->photoTaken(static fn (PhotoTaken $event) => self::storePlatePhoto($event->path))
+            ->permissionDenied(static fn () => Dialog::alert(
+                'Permissão Necessária',
+                'O Sentinela precisa de permissão de acesso à câmera para fotografar placas.'
+            ));
+    }
+
+    /**
+     * Copia a foto do cache temporario para o armazenamento privado do app.
+     */
+    public static function storePlatePhoto(string $sourcePath): string
+    {
+        $platesDir = storage_path('app/private/plates');
+
+        if (! File::isDirectory($platesDir)) {
+            File::makeDirectory($platesDir, 0755, true);
+            File::put($platesDir.DIRECTORY_SEPARATOR.'.nomedia', '');
         }
 
-        $this->replace('/capturar')->transition($this->resolveTransition());
+        $filename = 'placa_'.now()->format('Ymd_His').'_'.bin2hex(random_bytes(3)).'.jpg';
+        $targetPath = $platesDir.DIRECTORY_SEPARATOR.$filename;
+
+        File::copy($sourcePath, $targetPath);
+
+        return $targetPath;
     }
 
     public function goToHistory(): void
@@ -47,15 +76,6 @@ class AppBottomBar extends NativeComponent
         }
 
         $this->replace('/perfil')->transition($this->resolveTransition());
-    }
-
-    public function goToMonitoring(): void
-    {
-        if ($this->active === 'monitoring') {
-            return;
-        }
-
-        $this->replace('/monitoramento')->transition($this->resolveTransition());
     }
 
     public function render(): View

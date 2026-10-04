@@ -8,30 +8,18 @@ it('renders the login screen correctly', function () {
         ->assertSee('Sentinela')
         ->assertSee('FATEC')
         ->assertSee('Controle de Acesso e Portaria')
-        ->assertSee('operador.guarita')
+        ->assertSee('Código ou Usuário')
         ->assertSee('Acessar Terminal')
         ->assertSee('Centro Paula Souza');
 });
 
-it('renders the monitoring screen with cards and metrics without gate queue', function () {
-    Native::visit('/monitoramento')
-        ->assertSee('Área da Guarita')
+it('renders the profile screen correctly', function () {
+    Native::visit('/perfil')
+        ->assertSee('Perfil do Operador')
         ->assertSee('Operador Guarita')
-        ->assertSee('GDA - 104')
-        ->assertSee('Capturar Placa')
-        ->assertSee('Passagens hoje')
-        ->assertSee('Liberações automáticas')
-        ->assertSee('Correções de placa')
-        ->assertDontSee('Fila da Cancela 01');
-});
-
-it('renders the camera capture screen with viewfinder and plate guide', function () {
-    Native::visit('/capturar')
-        ->assertSee('Capturar Placa')
-        ->assertSee('Cancela 01 • Entrada Principal')
-        ->assertSee('Placa detectada • foco travado')
-        ->assertSee('Posicione a placa dentro da moldura')
-        ->assertSee('Toque para capturar');
+        ->assertSee('Unidade & Terminal')
+        ->assertSee('FATEC • Centro Paula Souza')
+        ->assertSee('Encerrar Turno e Sair');
 });
 
 it('renders the history screen with filter chips and grouped items', function () {
@@ -54,4 +42,17 @@ it('does not re-navigate or animate when tapping active menu tab', function () {
     $bar->goToHistory();
 
     expect($bar->active)->toBe('history');
+});
+
+it('stores the captured plate photo in private storage', function () {
+    $source = tempnam(sys_get_temp_dir(), 'cam');
+    file_put_contents($source, 'fake-jpeg');
+
+    $storedPath = AppBottomBar::storePlatePhoto($source);
+
+    expect($storedPath)->toStartWith(storage_path('app/private/plates'))
+        ->and(file_get_contents($storedPath))->toBe('fake-jpeg');
+
+    unlink($storedPath);
+    unlink($source);
 });

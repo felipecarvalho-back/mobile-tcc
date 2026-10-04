@@ -110,7 +110,7 @@ return [
     */
 
     'permissions' => [
-        // 'NSCameraUsageDescription' => 'Used to take a profile photo.',
+        'NSCameraUsageDescription' => 'O Sentinela precisa de acesso à câmera para capturar placas de veículos.',
         // 'NSMicrophoneUsageDescription' => 'Used to record audio with your videos.',
         // 'NSPhotoLibraryUsageDescription' => 'Used to select photos for your post.',
     ],

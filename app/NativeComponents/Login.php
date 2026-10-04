@@ -2,15 +2,16 @@
 
 namespace App\NativeComponents;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
 use Native\Mobile\Edge\Transition;
 
 class Login extends NativeComponent
 {
-    public string $username = 'operador.guarita';
+    public string $username = '';
 
-    public string $password = '••••••';
+    public string $password = '';
 
     public bool $showPassword = false;
 
@@ -21,7 +22,11 @@ class Login extends NativeComponent
 
     public function login(): void
     {
-        $this->replace('/capturar')->transition(Transition::Fade);
+        Log::info('Tentando login com usuário:', [
+            'username' => $this->username,
+            'password_length' => strlen($this->password),
+        ]);
+        $this->replace('/perfil')->transition(Transition::Fade);
     }
 
     public function render(): View

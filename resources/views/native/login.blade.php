@@ -1,9 +1,6 @@
-<column
-    ref="login-screen"
-    fill
-    center
-    class="safe-area bg-[#FAF6F7] px-6 py-8 justify-center gap-6"
->
+@use('App\Icons\Ios')
+@use('App\Icons\Android')
+<column ref="login-screen" fill center class="safe-area bg-[#FAF6F7] px-6 py-8 justify-center gap-6">
     {{-- Tag Superior: Centro Paula Souza --}}
     <row class="items-center gap-2 px-4 py-1.5 rounded-full bg-[#FCECEE] self-center">
         <column class="w-2 h-2 rounded-full bg-[#8B0024]"></column>
@@ -44,42 +41,38 @@
         <column class="w-full gap-4 pt-1">
             {{-- Campo de Usuário --}}
             <column class="w-full gap-1.5">
-                <text class="text-xs font-bold text-gray-800">
-                    Usuário
+                <text class="text-xs font-bold text-gray-700">
+                    Código ou Usuário
                 </text>
-                <row class="w-full items-center gap-3 px-4 py-3.5 rounded-2xl border border-gray-200 bg-[#F9FAFB]">
-                    <native:icon name="person" :size="20" class="text-gray-400" />
-                    <text class="flex-1 text-sm font-semibold text-gray-800">
-                        {{ $username }}
-                    </text>
+                <row class="w-full items-center gap-3 px-4 py-3 rounded-2xl border border-[#8B0024] bg-white">
+                    <native:icon name="person" :size="20" class="text-[#8B0024]" />
+                    <native:bare-text-input class="flex-1 text-sm font-semibold text-gray-800" native:model="username"
+                        placeholder="Codigo de Acesso" keyboard="username" autocapitalize="none" />
                 </row>
             </column>
 
             {{-- Campo de Senha com Foco Ativo e Cursor --}}
             <column class="w-full gap-1.5">
-                <text class="text-xs font-bold text-gray-800">
+                <text class="text-xs font-bold text-gray-700">
                     Senha
                 </text>
-                <row class="w-full items-center gap-3 px-4 py-3.5 rounded-2xl border-2 border-[#8B0024] bg-white">
+                <row class="w-full items-center gap-3 px-4 py-3 rounded-2xl border-2 border-[#8B0024] bg-white">
                     <native:icon name="lock" :size="20" class="text-[#8B0024]" />
-                    <row class="flex-1 items-center gap-0.5">
-                        <text class="text-base font-black text-gray-900 tracking-widest">
-                            {{ $showPassword ? '123456' : '••••••' }}
-                        </text>
-                        <column class="w-[2px] h-4 bg-gray-900"></column>
-                    </row>
+
+                    <native:bare-text-input class="flex-1 text-sm font-semibold text-gray-800" native:model="password"
+                        placeholder="Digite sua senha" :secure="!$showPassword" />
+
                     <column @tap="togglePassword">
-                        <native:icon name="eye" :size="20" class="text-gray-400" />
+                        <native:icon :android="$showPassword ? 'visibility_off' : 'visibility'" :size="20"
+                            class="text-gray-400" />
                     </column>
                 </row>
             </column>
         </column>
 
         {{-- Botão Acessar Terminal --}}
-        <row
-            class="w-full items-center justify-center gap-2.5 py-4 rounded-2xl bg-[#8B0024] shadow-lg shadow-[#8B0024]/25 active:opacity-90"
-            @tap="login"
-        >
+        <row class="w-full items-center justify-center gap-2.5 py-4 rounded-2xl bg-[#8B0024] shadow-lg shadow-[#8B0024]/25 active:opacity-90"
+            @tap="login">
             <native:icon name="arrow-right" :size="20" class="text-white" />
             <text class="text-base font-black text-white tracking-wide">
                 Acessar Terminal
