@@ -4,6 +4,7 @@ namespace App\NativeComponents;
 
 use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
+use Native\Mobile\Edge\Transition;
 
 class Monitoring extends NativeComponent
 {
@@ -25,58 +26,19 @@ class Monitoring extends NativeComponent
 
     public int $campusBalance = 27;
 
-    /**
-     * @var array<int, array<string, mixed>>
-     */
-    public array $queue = [
-        [
-            'plate' => 'BRA-2819',
-            'ocr' => 72,
-            'title' => 'Possível Prof. Dr. Marcos Souza',
-            'subtitle' => 'Docente DSM — Desenv. de Software',
-            'status' => 'waiting',
-            'statusLabel' => 'Aguardando Liberação',
-            'time' => '14:32:05',
-            'corrected' => false,
-            'photosCount' => 0,
-        ],
-        [
-            'plate' => 'ABC-1234',
-            'ocr' => 99,
-            'title' => 'Carlos Silva',
-            'subtitle' => 'Manutenção Predial (Prestador) • Tag Ativa',
-            'status' => 'authorized',
-            'statusLabel' => 'Autorizado',
-            'time' => '14:28:40',
-            'corrected' => false,
-            'photosCount' => 0,
-        ],
-        [
-            'plate' => 'FKX-9A42',
-            'ocr' => 88,
-            'title' => 'Veículo Não Cadastrado',
-            'subtitle' => 'Motocicleta Entregador / Visitante Eventual',
-            'status' => 'unregistered',
-            'statusLabel' => 'Não Cadastrado',
-            'time' => '14:21:12',
-            'corrected' => false,
-            'photosCount' => 0,
-        ],
-    ];
-
     public function goToCapture(): void
     {
-        $this->navigate('/capturar');
+        $this->replace('/capturar')->transition(Transition::Fade);
     }
 
     public function goToHistory(): void
     {
-        $this->navigate('/historico');
+        $this->replace('/historico')->transition(Transition::Fade);
     }
 
     public function goToProfile(): void
     {
-        $this->navigate('/perfil');
+        $this->replace('/perfil')->transition(Transition::Fade);
     }
 
     public function render(): View

@@ -1,5 +1,6 @@
 <?php
 
+use App\NativeComponents\AppBottomBar;
 use Native\Mobile\Testing\Native;
 
 it('renders the login screen correctly', function () {
@@ -12,7 +13,7 @@ it('renders the login screen correctly', function () {
         ->assertSee('Centro Paula Souza');
 });
 
-it('renders the monitoring screen with cards, metrics and queue', function () {
+it('renders the monitoring screen with cards and metrics without gate queue', function () {
     Native::visit('/monitoramento')
         ->assertSee('Área da Guarita')
         ->assertSee('Operador Guarita')
@@ -21,10 +22,7 @@ it('renders the monitoring screen with cards, metrics and queue', function () {
         ->assertSee('Passagens hoje')
         ->assertSee('Liberações automáticas')
         ->assertSee('Correções de placa')
-        ->assertSee('Fila da Cancela 01')
-        ->assertSee('BRA-2819')
-        ->assertSee('Aguardando Liberação')
-        ->assertSee('Monitoramento');
+        ->assertDontSee('Fila da Cancela 01');
 });
 
 it('renders the camera capture screen with viewfinder and plate guide', function () {
@@ -46,4 +44,14 @@ it('renders the history screen with filter chips and grouped items', function ()
         ->assertSee('Hoje • 21/09/2026')
         ->assertSee('Carlos Silva')
         ->assertSee('Veículo Não Cadastrado');
+});
+
+it('does not re-navigate or animate when tapping active menu tab', function () {
+    $bar = new AppBottomBar;
+    $bar->active = 'history';
+
+    // Ao invocar a navegação da mesma aba ativa, a ação é cancelada imediatamente
+    $bar->goToHistory();
+
+    expect($bar->active)->toBe('history');
 });

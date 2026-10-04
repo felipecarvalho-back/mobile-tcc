@@ -4,6 +4,7 @@ namespace App\NativeComponents;
 
 use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
+use Native\Mobile\Edge\Transition;
 
 class Login extends NativeComponent
 {
@@ -20,7 +21,7 @@ class Login extends NativeComponent
 
     public function login(): void
     {
-        $this->navigate('/monitoramento');
+        $this->replace('/capturar')->transition(Transition::Fade);
     }
 
     public function render(): View

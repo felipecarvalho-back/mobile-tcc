@@ -4,6 +4,7 @@ namespace App\NativeComponents;
 
 use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
+use Native\Mobile\Edge\Transition;
 
 class CameraCapture extends NativeComponent
 {
@@ -23,7 +24,7 @@ class CameraCapture extends NativeComponent
 
     public function close(): void
     {
-        $this->navigate('/monitoramento');
+        $this->replace('/historico')->transition(Transition::Fade);
     }
 
     public function toggleFlash(): void
@@ -33,18 +34,18 @@ class CameraCapture extends NativeComponent
 
     public function flipCamera(): void
     {
-        // Alternância de câmera
+        // Alternância de câmera frontal/traseira
     }
 
     public function capture(): void
     {
         $this->isCapturing = true;
-        $this->navigate('/monitoramento');
+        $this->replace('/historico')->transition(Transition::Fade);
     }
 
     public function openLastCapture(): void
     {
-        $this->navigate('/historico');
+        $this->replace('/historico')->transition(Transition::Fade);
     }
 
     public function render(): View

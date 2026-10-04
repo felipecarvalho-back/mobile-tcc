@@ -55,29 +55,7 @@
             </row>
         </column>
 
-        {{-- Card de Configurações Rápidas --}}
-        <column class="w-full bg-white rounded-2xl border border-gray-200/90 p-4 shadow-sm gap-3">
-            <text class="text-xs font-bold text-gray-400 uppercase tracking-wider">
-                Preferências de Captura
-            </text>
-
-            <row class="w-full items-center justify-between py-1">
-                <row class="items-center gap-2.5">
-                    <native:icon name="bolt" :size="18" class="text-amber-600" />
-                    <text class="text-sm font-semibold text-gray-800">Flash Automático</text>
-                </row>
-                <text class="text-xs font-bold text-emerald-600">Ativado</text>
-            </row>
-
-            <row class="w-full items-center justify-between py-1">
-                <row class="items-center gap-2.5">
-                    <native:icon name="shield" :size="18" class="text-[#8B0024]" />
-                    <text class="text-sm font-semibold text-gray-800">Sensibilidade OCR</text>
-                </row>
-                <text class="text-xs font-bold text-gray-700">Alta (70%+)</text>
-            </row>
-        </column>
-
+        <native:spacer class="h-4" />
         {{-- Botão de Encerrar Turno / Logout --}}
         <row
             class="w-full items-center justify-center gap-2 py-4 rounded-2xl bg-red-50 border border-red-200 active:bg-red-100"

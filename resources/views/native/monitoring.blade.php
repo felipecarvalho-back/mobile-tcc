@@ -122,44 +122,6 @@
             </row>
         </row>
 
-        {{-- Seção: Fila da Cancela 01 --}}
-        <column class="w-full gap-3 pt-1 pb-4">
-            <row class="w-full items-center justify-between">
-                <row class="items-center gap-2">
-                    <text class="text-lg font-black text-gray-900">
-                        Fila da Cancela 01
-                    </text>
-                    <row class="items-center gap-1 px-2.5 py-0.5 rounded-full bg-red-100">
-                        <column class="w-1.5 h-1.5 rounded-full bg-red-600"></column>
-                        <text class="text-[10px] font-black text-red-600 tracking-wider">
-                            AO VIVO
-                        </text>
-                    </row>
-                </row>
-
-                <column @tap="goToHistory">
-                    <text class="text-xs font-black text-[#8B0024]">
-                        Ver tudo
-                    </text>
-                </column>
-            </row>
-
-            {{-- Itens de Veículos na Fila --}}
-            @foreach ($queue as $item)
-                <native:vehicle-card
-                    :plate="$item['plate']"
-                    :ocr="$item['ocr']"
-                    :title="$item['title']"
-                    :subtitle="$item['subtitle']"
-                    :status="$item['status']"
-                    :statusLabel="$item['statusLabel']"
-                    :time="$item['time']"
-                    :corrected="$item['corrected']"
-                    :photosCount="$item['photosCount']"
-                    key="queue-{{ $item['plate'] }}"
-                />
-            @endforeach
-        </column>
     </scroll-view>
 
     {{-- Barra de Navegação Inferior --}}

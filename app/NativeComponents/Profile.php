@@ -4,6 +4,7 @@ namespace App\NativeComponents;
 
 use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
+use Native\Mobile\Edge\Transition;
 
 class Profile extends NativeComponent
 {
@@ -19,7 +20,7 @@ class Profile extends NativeComponent
 
     public function logout(): void
     {
-        $this->navigate('/login');
+        $this->replace('/login')->transition(Transition::Fade);
     }
 
     public function render(): View
