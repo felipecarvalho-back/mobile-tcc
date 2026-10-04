@@ -61,7 +61,6 @@
             class="w-full items-center justify-center gap-2 py-4 rounded-2xl bg-red-50 border border-red-200 active:bg-red-100"
             @tap="logout"
         >
-            <native:icon name="arrow-right" :size="18" class="text-red-700" />
             <text class="text-sm font-bold text-red-700">
                 Encerrar Turno e Sair
             </text>
