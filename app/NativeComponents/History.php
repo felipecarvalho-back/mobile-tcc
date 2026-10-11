@@ -83,11 +83,6 @@ class History extends NativeComponent
         $this->selectedFilter = $filter;
     }
 
-    public function openFilterSheet(): void
-    {
-        // Abertura de modal / opções de filtro
-    }
-
     public function render(): View
     {
         return view('native.history');

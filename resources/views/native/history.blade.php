@@ -6,13 +6,6 @@
             <text class="text-2xl font-black text-gray-900 tracking-tight">
                 Histórico de Capturas
             </text>
-
-            <stack class="relative" @tap="openFilterSheet">
-                <column class="w-10 h-10 rounded-2xl bg-white border border-gray-200 items-center justify-center shadow-sm">
-                    <native:icon name="line-3-horizontal-decrease" :size="18" class="text-gray-700" />
-                </column>
-                <column class="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#8B0024]"></column>
-            </stack>
         </row>
 
         {{-- Barra de Busca --}}
