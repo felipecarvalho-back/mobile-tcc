@@ -1,11 +1,11 @@
 @use('App\Icons\Ios')
 @use('App\Icons\Android')
 <scroll-view fill class="safe-area bg-[#FAF6F7]">
-    <column ref="login-screen" fill center class="w-full min-h-full px-6 py-8 justify-center gap-6">
+    <column ref="login-screen" fill center class="w-full px-6 py-8 justify-center gap-6">
         {{-- Tag Superior: Centro Paula Souza --}}
         <row class="items-center gap-2 px-4 py-1.5 rounded-full bg-[#FCECEE] self-center">
             <column class="w-2 h-2 rounded-full bg-[#8B0024]"></column>
-            <text class="text-[11px] font-black tracking-wider text-[#8B0024] uppercase">
+            <text class="text-[11px] font-bold tracking-wider text-[#8B0024] uppercase">
                 Centro Paula Souza • Governo de SP
             </text>
         </row>
@@ -23,11 +23,11 @@
 
                 <column class="flex-1 justify-center">
                     <row class="items-center gap-2">
-                        <text class="text-2xl font-black text-gray-900 tracking-tight">
+                        <text class="text-2xl font-bold text-gray-900 tracking-tight">
                             Sentinela
                         </text>
                         <row class="px-2 py-0.5 rounded-md bg-[#FCECEE]">
-                            <text class="text-xs font-black text-[#8B0024]">
+                            <text class="text-xs font-bold text-[#8B0024]">
                                 FATEC
                             </text>
                         </row>
@@ -40,15 +40,24 @@
 
             {{-- Formulário de Acesso --}}
             <column class="w-full gap-4 pt-1">
+                @if ($errorMessage)
+                    <row class="w-full p-3 rounded-xl bg-red-50 border border-red-200 items-center gap-2">
+                        <native:icon name="error" :size="18" class="text-red-600" />
+                        <text class="flex-1 text-xs font-semibold text-red-700">
+                            {{ $errorMessage }}
+                        </text>
+                    </row>
+                @endif
+
                 {{-- Campo de Usuário --}}
                 <column class="w-full gap-1.5">
                     <text class="text-xs font-bold text-gray-700">
                         Código ou Usuário
                     </text>
-                    <row class="w-full h-14 items-center gap-3 px-4 rounded-2xl border border-gray-200 bg-[#F9FAFB]">
+                    <row class="w-full h-14 items-center gap-3 px-4 rounded-2xl border-2 border-[#8B0024] bg-white">
                         <native:icon name="person" :size="20" class="text-[#8B0024]" />
-                        <native:bare-text-input class="flex-1 text-sm font-semibold text-gray-800" native:model="username"
-                            placeholder="Codigo de Acesso" keyboard="username" autocapitalize="none" />
+                        <native:bare-text-input class="flex-1 text-sm font-semibold text-gray-800 uppercase" native:model="codigo_operador"
+                            placeholder="Codigo de Acesso" keyboard="default" autocapitalize="characters" />
                     </row>
                 </column>
 
@@ -60,7 +69,7 @@
                     <row class="w-full h-14 items-center gap-3 px-4 rounded-2xl border-2 border-[#8B0024] bg-white">
                         <native:icon name="lock" :size="20" class="text-[#8B0024]" />
 
-                        <native:bare-text-input class="flex-1 text-sm font-semibold text-gray-800" native:model="password"
+                        <native:bare-text-input class="flex-1 text-sm font-semibold text-gray-800" native:model="senha"
                             placeholder="Digite sua senha" :secure="!$showPassword" />
 
                         <column @tap="togglePassword">
@@ -72,11 +81,18 @@
             </column>
 
             {{-- Botão Acessar Terminal --}}
-            <row class="w-full h-14 items-center justify-center gap-2.5 rounded-2xl bg-[#8B0024] shadow-lg shadow-[#8B0024]/25 active:opacity-90"
-                @tap="login">
-                <text class="text-base font-black text-white tracking-wide">
-                    Acessar Terminal
-                </text>
+            <row class="w-full h-14 items-center justify-center gap-2.5 rounded-2xl bg-[#8B0024] shadow-lg"
+                @tap="{{ $isLoading ? '' : 'login' }}">
+                @if ($isLoading)
+                    <native:activity-indicator size="18" color="#ffffff" />
+                    <text class="text-base font-bold text-white tracking-wide">
+                        Autenticando...
+                    </text>
+                @else
+                    <text class="text-base font-bold text-white tracking-wide">
+                        Acessar Terminal
+                    </text>
+                @endif
             </row>
         </column>
 
