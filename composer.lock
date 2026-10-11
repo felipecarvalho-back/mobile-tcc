@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fcdf02c5b7c8e20add4b7bf0cce2b614",
+    "content-hash": "407d23d980955122b231d5016dc79ba3",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -2648,16 +2648,16 @@
         },
         {
             "name": "nativephp/mobile",
-            "version": "4.5.1",
+            "version": "4.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/NativePHP/mobile-air.git",
-                "reference": "19e421ba591d6dda1a2ea7cb220b61329d4b2614"
+                "reference": "ee03682ee7fd9939c229e8414123a795771c70e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/NativePHP/mobile-air/zipball/19e421ba591d6dda1a2ea7cb220b61329d4b2614",
-                "reference": "19e421ba591d6dda1a2ea7cb220b61329d4b2614",
+                "url": "https://api.github.com/repos/NativePHP/mobile-air/zipball/ee03682ee7fd9939c229e8414123a795771c70e7",
+                "reference": "ee03682ee7fd9939c229e8414123a795771c70e7",
                 "shasum": ""
             },
             "require": {
@@ -2739,9 +2739,9 @@
             ],
             "support": {
                 "issues": "https://github.com/NativePHP/mobile-air/issues",
-                "source": "https://github.com/NativePHP/mobile-air/tree/4.5.1"
+                "source": "https://github.com/NativePHP/mobile-air/tree/4.6.0"
             },
-            "time": "2026-09-19T15:03:37+00:00"
+            "time": "2026-10-02T23:19:44+00:00"
         },
         {
             "name": "nativephp/mobile-browser",
@@ -2852,6 +2852,61 @@
                 "source": "https://github.com/NativePHP/mobile-camera/tree/1.0.4"
             },
             "time": "2026-07-17T01:38:16+00:00"
+        },
+        {
+            "name": "nativephp/mobile-network",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/NativePHP/mobile-network.git",
+                "reference": "ab28f341efa6f2da4c5b9e4b4321c7079fc16f25"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/NativePHP/mobile-network/zipball/ab28f341efa6f2da4c5b9e4b4321c7079fc16f25",
+                "reference": "ab28f341efa6f2da4c5b9e4b4321c7079fc16f25",
+                "shasum": ""
+            },
+            "require": {
+                "nativephp/mobile": "^3.0 || ^4.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^10.0",
+                "pestphp/pest": "^2.7|^3.0|^4.0"
+            },
+            "type": "nativephp-plugin",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Native\\Mobile\\Providers\\NetworkServiceProvider"
+                    ]
+                },
+                "nativephp": {
+                    "manifest": "nativephp.json"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Native\\Mobile\\Providers\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "NativePHP",
+                    "email": "support@nativephp.com"
+                }
+            ],
+            "description": "Network connectivity status plugin for NativePHP Mobile",
+            "support": {
+                "issues": "https://github.com/NativePHP/mobile-network/issues",
+                "source": "https://github.com/NativePHP/mobile-network/tree/1.1.0"
+            },
+            "time": "2026-09-03T18:26:19+00:00"
         },
         {
             "name": "nativephp/mobile-ui",
