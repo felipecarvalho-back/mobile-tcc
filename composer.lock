@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "407d23d980955122b231d5016dc79ba3",
+    "content-hash": "dec2abf623949c74ee13d3483f65116f",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -7222,6 +7222,60 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.4.0"
             },
             "time": "2025-12-02T11:56:42+00:00"
+        },
+        {
+            "name": "unloc/nativephp-enhanced-splash",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/unlocnl/nativephp-enhanced-splash.git",
+                "reference": "1c52eedb9d1585c94149a04ecf51569357b63d5d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/unlocnl/nativephp-enhanced-splash/zipball/1c52eedb9d1585c94149a04ecf51569357b63d5d",
+                "reference": "1c52eedb9d1585c94149a04ecf51569357b63d5d",
+                "shasum": ""
+            },
+            "require": {
+                "nativephp/mobile": "^4.4",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "pestphp/pest": "^5.0"
+            },
+            "type": "nativephp-plugin",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Unloc\\NativephpEnhancedSplash\\NativephpEnhancedSplashServiceProvider"
+                    ]
+                },
+                "nativephp": {
+                    "manifest": "nativephp.json"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Unloc\\NativephpEnhancedSplash\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "David Beentjes",
+                    "email": "info@unloc.nl"
+                }
+            ],
+            "description": "Jump-free Android system splash and vector splash support on iOS",
+            "support": {
+                "issues": "https://github.com/unlocnl/nativephp-enhanced-splash/issues",
+                "source": "https://github.com/unlocnl/nativephp-enhanced-splash/tree/1.1.0"
+            },
+            "time": "2026-10-07T11:05:42+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

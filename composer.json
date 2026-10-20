@@ -26,7 +26,8 @@
         "nativephp/mobile-browser": "^1.0",
         "nativephp/mobile-camera": "^1.0",
         "nativephp/mobile-network": "*",
-        "nativephp/mobile-ui": "^0.6.0"
+        "nativephp/mobile-ui": "^0.6.0",
+        "unloc/nativephp-enhanced-splash": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
