@@ -2,13 +2,16 @@
 
 namespace App\NativeComponents;
 
-use App\Models\User;
+use App\NativeComponents\Concerns\MonitorsNetwork;
+use App\Services\ApiService;
 use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
 use Native\Mobile\Edge\Transition;
 
 class Profile extends NativeComponent
 {
+    use MonitorsNetwork;
+
     public string $operatorName = 'Operador Guarita';
 
     public string $role = 'Operador de Portaria';
@@ -21,7 +24,16 @@ class Profile extends NativeComponent
 
     public function mount(): void
     {
-        $user = User::whereNotNull('access_token')->first();
+        $this->syncNetworkState();
+
+        if (! ApiService::hasValidLocalToken()) {
+            ApiService::clearSession();
+            $this->replace('/login')->transition(Transition::Fade);
+
+            return;
+        }
+
+        $user = ApiService::user();
 
         if ($user) {
             $this->operatorName = $user->name;
@@ -30,9 +42,19 @@ class Profile extends NativeComponent
         }
     }
 
+    public function onResume(): void
+    {
+        $this->syncNetworkState();
+
+        if (! ApiService::hasValidLocalToken()) {
+            ApiService::clearSession();
+            $this->replace('/login')->transition(Transition::Fade);
+        }
+    }
+
     public function logout(): void
     {
-        User::truncate();
+        ApiService::clearSession();
         $this->replace('/login')->transition(Transition::Fade);
     }
 

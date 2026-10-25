@@ -3,6 +3,7 @@
 namespace App\NativeComponents;
 
 use App\Models\User;
+use App\NativeComponents\Concerns\MonitorsNetwork;
 use App\Services\ApiService;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
@@ -11,10 +12,11 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
 use Native\Mobile\Edge\Transition;
-use Native\Mobile\Facades\Network;
 
 class Login extends NativeComponent
 {
+    use MonitorsNetwork;
+
     public string $codigo_operador = '';
 
     public string $senha = '';
@@ -25,13 +27,70 @@ class Login extends NativeComponent
 
     public bool $isLoading = false;
 
+    public bool $isCheckingSession = false;
+
     public function mount(): void
     {
         $this->ensureDatabaseReady();
+        $this->syncNetworkState();
+        $this->checkExistingSession();
+    }
 
-        if (User::whereNotNull('access_token')->exists()) {
-            $this->replace('/perfil');
+    public function onResume(): void
+    {
+        $this->syncNetworkState();
+    }
+
+    public function onNetworkRestored(): void
+    {
+        $this->errorMessage = '';
+        $this->checkExistingSession();
+    }
+
+    public function checkExistingSession(): void
+    {
+        if (! User::whereNotNull('access_token')->exists()) {
+            return;
         }
+
+        if (! ApiService::hasValidLocalToken()) {
+            ApiService::clearSession();
+            $this->errorMessage = 'Sua sessão expirou. Faça login novamente.';
+
+            return;
+        }
+
+        if ($this->isOffline) {
+            $this->errorMessage = 'Sem conexão com a internet. Conecte-se para validar sua sessão.';
+
+            return;
+        }
+
+        $this->isCheckingSession = true;
+        $this->errorMessage = '';
+
+        $this->async(static fn (): array => ApiService::verifySession())
+            ->finished(function (array $result): void {
+                $this->isCheckingSession = false;
+
+                if (! empty($result['valid'])) {
+                    $this->replace('/perfil')->transition(Transition::Fade);
+
+                    return;
+                }
+
+                if (! empty($result['offline'])) {
+                    $this->isOffline = true;
+                }
+
+                $this->errorMessage = $result['message'] ?? 'Sua sessão expirou. Faça login novamente.';
+            })
+            ->failed(function (\Throwable $e): void {
+                $this->isCheckingSession = false;
+                Log::warning('Falha ao validar sessão na abertura do app:', ['error' => $e->getMessage()]);
+                $this->syncNetworkState();
+                $this->errorMessage = 'Não foi possível conectar ao servidor para validar sua sessão.';
+            });
     }
 
     private function ensureDatabaseReady(): void
@@ -67,8 +126,8 @@ class Login extends NativeComponent
             return;
         }
 
-        $network = Network::status();
-        if ($network && ! $network->connected) {
+        $this->syncNetworkState();
+        if ($this->isOffline) {
             $this->errorMessage = 'Sem conexão com a internet. Verifique o Wi-Fi ou dados móveis.';
 
             return;

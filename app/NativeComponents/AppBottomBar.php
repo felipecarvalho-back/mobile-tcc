@@ -35,6 +35,15 @@ class AppBottomBar extends NativeComponent
      */
     public function takePhoto(): void
     {
+        if (! ApiService::isOnline()) {
+            Dialog::alert(
+                'Sem Conexão com a Internet',
+                'O Sentinela precisa de conexão com a internet para funcionar e enviar fotos. Conecte-se ao Wi-Fi ou dados móveis.'
+            );
+
+            return;
+        }
+
         Camera::getPhoto()
             ->photoTaken(static fn (PhotoTaken $event) => self::handlePhotoTaken($event->path))
             ->permissionDenied(static fn () => Dialog::alert(
@@ -50,10 +59,12 @@ class AppBottomBar extends NativeComponent
     {
         $targetPath = self::storePlatePhoto($sourcePath);
 
-        if (! ApiService::getToken()) {
+        if (! ApiService::hasValidLocalToken()) {
+            ApiService::clearSession();
+
             Dialog::alert(
                 'Sessão Expirada',
-                'Faça login novamente para enviar fotos para análise.'
+                'Sua sessão expirou. Acesse o perfil e faça login novamente para enviar fotos.'
             );
 
             return;
@@ -92,10 +103,12 @@ class AppBottomBar extends NativeComponent
                 return;
             }
 
-            if ($response->status() === 401) {
+            if (in_array($response->status(), [401, 403], true)) {
+                ApiService::clearSession();
+
                 Dialog::alert(
                     'Sessão Expirada',
-                    'Sua sessão expirou. Acesse o perfil e faça login novamente.'
+                    $response->json('message') ?? 'Sua sessão expirou. Acesse o perfil e faça login novamente.'
                 );
 
                 return;

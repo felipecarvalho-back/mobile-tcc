@@ -33,6 +33,8 @@
 
     {{-- Opções e Informações Operacionais --}}
     <scroll-view class="flex-1 w-full px-5 py-5 gap-4">
+        <native:offline-banner :is-offline="$isOffline" />
+
         {{-- Card de Informações da Unidade --}}
         <column class="w-full bg-white rounded-2xl border border-gray-200/90 p-4 shadow-sm gap-2">
             <text class="text-xs font-bold text-gray-400 uppercase tracking-wider">
@@ -50,8 +52,12 @@
             </row>
 
             <row class="w-full items-center justify-between pt-1">
-                <text class="text-sm font-semibold text-gray-700">Cancela Primária</text>
-                <text class="text-sm font-bold text-emerald-600">Cancela 01 (Operacional)</text>
+                <text class="text-sm font-semibold text-gray-700">Status de Rede</text>
+                @if ($isOffline)
+                    <text class="text-sm font-bold text-red-600">Offline (Sem internet)</text>
+                @else
+                    <text class="text-sm font-bold text-emerald-600">Online (Conectado)</text>
+                @endif
             </row>
         </column>
 

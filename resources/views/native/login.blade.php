@@ -2,6 +2,8 @@
 @use('App\Icons\Android')
 <scroll-view fill class="safe-area bg-[#FAF6F7]">
     <column ref="login-screen" fill center class="w-full px-6 py-8 justify-center gap-6">
+        <native:offline-banner :is-offline="$isOffline" />
+
         {{-- Tag Superior: Centro Paula Souza --}}
         <row class="items-center gap-2 px-4 py-1.5 rounded-full bg-[#FCECEE] self-center">
             <column class="w-2 h-2 rounded-full bg-[#8B0024]"></column>
@@ -82,8 +84,13 @@
 
             {{-- Botão Acessar Terminal --}}
             <row class="w-full h-14 items-center justify-center gap-2.5 rounded-2xl bg-[#8B0024] shadow-lg"
-                @tap="{{ $isLoading ? '' : 'login' }}">
-                @if ($isLoading)
+                @tap="{{ ($isLoading || $isCheckingSession) ? '' : 'login' }}">
+                @if ($isCheckingSession)
+                    <native:activity-indicator size="18" color="#ffffff" />
+                    <text class="text-base font-bold text-white tracking-wide">
+                        Verificando sessão...
+                    </text>
+                @elseif ($isLoading)
                     <native:activity-indicator size="18" color="#ffffff" />
                     <text class="text-base font-bold text-white tracking-wide">
                         Autenticando...
