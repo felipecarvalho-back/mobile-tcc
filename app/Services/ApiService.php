@@ -142,7 +142,7 @@ class ApiService
 
         try {
             $response = self::client()
-                ->timeout(15)
+                ->timeout(120)
                 ->get('/historico');
 
             if ($response->successful()) {
@@ -186,10 +186,12 @@ class ApiService
      */
     public static function client(): PendingRequest
     {
+        set_time_limit(120);
+
         $token = self::getToken();
 
         return Http::baseUrl(self::baseUrl())
-            ->timeout(20)
+            ->timeout(120)
             ->acceptJson()
             ->when($token, fn (PendingRequest $request) => $request->withToken($token));
     }

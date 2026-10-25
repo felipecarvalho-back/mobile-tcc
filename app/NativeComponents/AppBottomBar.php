@@ -86,7 +86,7 @@ class AppBottomBar extends NativeComponent
 
         try {
             $response = ApiService::client()
-                ->timeout(60)
+                ->timeout(120)
                 ->attach('foto', File::get($targetPath), basename($targetPath))
                 ->post('/enviar');
 
