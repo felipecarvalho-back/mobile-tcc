@@ -22,7 +22,7 @@
         "laravel/boost": "^2.2",
         "laravel/framework": "^13.0",
         "laravel/tinker": "^3.0",
-        "nativephp/mobile": "^4.0",
+        "nativephp/mobile": "^4.6.1",
         "nativephp/mobile-browser": "^1.0",
         "nativephp/mobile-camera": "^1.0",
         "nativephp/mobile-network": "*",
