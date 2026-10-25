@@ -9,6 +9,10 @@ class VehicleCard extends NativeComponent
 {
     public string $plate = '';
 
+    public bool $plateIdentified = false;
+
+    public string $photo = '';
+
     public int $ocr = 0;
 
     public string $title = '';
@@ -24,6 +28,17 @@ class VehicleCard extends NativeComponent
     public bool $corrected = false;
 
     public int $photosCount = 0;
+
+    public bool $showPhoto = false;
+
+    public function togglePhoto(): void
+    {
+        if (blank($this->photo)) {
+            return;
+        }
+
+        $this->showPhoto = ! $this->showPhoto;
+    }
 
     public function render(): View
     {
