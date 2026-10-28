@@ -5,6 +5,7 @@ namespace App\NativeComponents;
 use App\Services\ApiService;
 use Illuminate\Support\Facades\File;
 use Illuminate\View\View;
+use Native\Mobile\AsyncTask;
 use Native\Mobile\Edge\NativeComponent;
 use Native\Mobile\Edge\Transition;
 use Native\Mobile\Events\Camera\PhotoTaken;
@@ -53,7 +54,7 @@ class AppBottomBar extends NativeComponent
     }
 
     /**
-     * Salva a foto localmente e envia para a API (/api/enviar) com o token do usuario.
+     * Salva a foto localmente e envia para a API (/api/enviar) em segundo plano com o token do usuario.
      */
     public static function handlePhotoTaken(string $sourcePath): void
     {
@@ -84,47 +85,49 @@ class AppBottomBar extends NativeComponent
             // Prossegue caso o plugin de rede falhe ao consultar status
         }
 
-        try {
-            $response = ApiService::client()
-                ->timeout(120)
-                ->attach('foto', File::get($targetPath), basename($targetPath))
-                ->post('/enviar');
+        Dialog::toast('Foto capturada! Enviando placa para análise...');
 
-            if ($response->successful()) {
-                $data = $response->json();
-                $mensagem = $data['mensagem'] ?? 'Imagem enviada com sucesso!';
-                $placa = $data['placa'] ?? 'Não identificada';
+        $baseUrl = ApiService::baseUrl();
+        $token = (string) ApiService::getToken();
 
+        AsyncTask::dispatch(static fn (): array => ApiService::sendPhoto($targetPath, $token, $baseUrl))
+            ->timeout(130)
+            ->finished(static function (array $result): void {
+                if (! empty($result['success'])) {
+                    $data = $result['data'] ?? [];
+                    $mensagem = $data['mensagem'] ?? 'Imagem enviada com sucesso!';
+                    $placa = $data['placa'] ?? 'Não identificada';
+
+                    Dialog::alert(
+                        'Foto Enviada',
+                        "{$mensagem}\nPlaca: {$placa}"
+                    );
+
+                    return;
+                }
+
+                if (in_array($result['status'] ?? 0, [401, 403], true)) {
+                    ApiService::clearSession();
+
+                    $msg = $result['data']['message'] ?? 'Sua sessão expirou. Acesse o perfil e faça login novamente.';
+                    Dialog::alert('Sessão Expirada', (string) $msg);
+
+                    return;
+                }
+
+                $errorMessage = $result['data']['erro']
+                    ?? $result['data']['message']
+                    ?? $result['error']
+                    ?? 'Não foi possível processar a imagem no servidor.';
+
+                Dialog::alert('Erro no Envio', (string) $errorMessage);
+            })
+            ->failed(static function (Throwable $e): void {
                 Dialog::alert(
-                    'Foto Enviada',
-                    "{$mensagem}\nPlaca: {$placa}"
+                    'Erro de Conexão',
+                    'Não foi possível enviar a foto para o servidor. Verifique sua conexão e tente novamente.'
                 );
-
-                return;
-            }
-
-            if (in_array($response->status(), [401, 403], true)) {
-                ApiService::clearSession();
-
-                Dialog::alert(
-                    'Sessão Expirada',
-                    $response->json('message') ?? 'Sua sessão expirou. Acesse o perfil e faça login novamente.'
-                );
-
-                return;
-            }
-
-            $errorMessage = $response->json('erro')
-                ?? $response->json('message')
-                ?? 'Não foi possível processar a imagem no servidor.';
-
-            Dialog::alert('Erro no Envio', (string) $errorMessage);
-        } catch (Throwable) {
-            Dialog::alert(
-                'Erro de Conexão',
-                'Não foi possível enviar a foto para o servidor. Verifique sua conexão e tente novamente.'
-            );
-        }
+            });
     }
 
     /**

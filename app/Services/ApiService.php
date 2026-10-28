@@ -182,6 +182,43 @@ class ApiService
     }
 
     /**
+     * Envia a foto da placa para a API em segundo plano.
+     *
+     * @return array{success: bool, status: int, data?: array<string, mixed>, error?: string}
+     */
+    public static function sendPhoto(string $targetPath, ?string $token = null, ?string $baseUrl = null): array
+    {
+        try {
+            $token ??= self::getToken();
+            $baseUrl ??= self::baseUrl();
+
+            $request = Http::baseUrl($baseUrl)
+                ->timeout(120)
+                ->acceptJson();
+
+            if (! blank($token)) {
+                $request = $request->withToken($token);
+            }
+
+            $response = $request
+                ->attach('foto', file_get_contents($targetPath), basename($targetPath))
+                ->post('/enviar');
+
+            return [
+                'success' => $response->successful(),
+                'status' => $response->status(),
+                'data' => $response->json() ?? [],
+            ];
+        } catch (Throwable $e) {
+            return [
+                'success' => false,
+                'status' => 0,
+                'error' => $e->getMessage(),
+            ];
+        }
+    }
+
+    /**
      * Cria e retorna uma instância do PendingRequest pré-configurada com headers e token.
      */
     public static function client(): PendingRequest

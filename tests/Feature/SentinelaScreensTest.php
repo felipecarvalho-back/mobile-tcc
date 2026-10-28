@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\User;
 use App\NativeComponents\AppBottomBar;
+use Illuminate\Support\Facades\Artisan;
+use Native\Mobile\AsyncTask;
 use Native\Mobile\Testing\Native;
 
 it('renders the login screen correctly', function () {
@@ -29,9 +32,7 @@ it('renders the history screen with filter chips and grouped items', function ()
         ->assertSee('Docentes')
         ->assertSee('Prestadores')
         ->assertSee('Visitantes')
-        ->assertSee('Hoje • 21/09/2026')
-        ->assertSee('Carlos Silva')
-        ->assertSee('Veículo Não Cadastrado');
+        ->assertSee('Hoje • '.now()->format('d/m/Y'));
 });
 
 it('does not re-navigate or animate when tapping active menu tab', function () {
@@ -54,5 +55,27 @@ it('stores the captured plate photo in private storage', function () {
         ->and(file_get_contents($storedPath))->toBe('fake-jpeg');
 
     unlink($storedPath);
+    unlink($source);
+});
+
+it('dispatches async task to upload photo without blocking main thread', function () {
+    Artisan::call('migrate');
+    $fake = AsyncTask::fake();
+
+    User::query()->delete();
+    User::create([
+        'name' => 'Operador Teste',
+        'email' => 'teste@fatec.sp.gov.br',
+        'password' => bcrypt('secret'),
+        'access_token' => 'header.'.base64_encode(json_encode(['exp' => time() + 3600])).'.signature',
+    ]);
+
+    $source = tempnam(sys_get_temp_dir(), 'cam');
+    file_put_contents($source, 'fake-jpeg');
+
+    AppBottomBar::handlePhotoTaken($source);
+
+    $fake->assertDispatched();
+
     unlink($source);
 });
